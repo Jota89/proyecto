@@ -33,7 +33,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="ajaxModalLabel">Crear Empleado</h2>
+                    <h2 class="modal-title" id="ajaxModalLabel">Crear Producto</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -42,54 +42,34 @@
                     <div class="alert alert-primary" role="alert">
                         Los campos con asteriscos (*) son obligatorios
                     </div>
-                    <form id="empleadoForm" name="empleadoForm" class="form-horizontal" >
+                    <form id="productoForm" name="productoForm" class="form-horizontal" >
                         @csrf
                         <input type="hidden" name="id" id='id'>
                         <div class="form-group">
                             <label for="nombre">Nombre completo <span class="text-danger">*</span></label>
-                            {!! Form::text('nombre', null, array('id' => 'nombre', 'class' => 'form-control', 'placeholder' => 'Nombre completo', 'required' => 'required' )) !!}
+                            {!! Form::text('nombre', null, array('id' => 'nombre', 'class' => 'form-control', 'placeholder' => 'Nombre Producto', 'required' => 'required' )) !!}
                         </div>
                         <div class="form-group">
-                            <label for="email">Correo electrónico <span class="text-danger">*</span></label>
-                            {!! Form::email('email', null, array('id' => 'email', 'class' => 'form-control', 'placeholder' => 'Correo electrónico', 'required' => 'required' )) !!}
-                        </div>
-                        <div class="form-group">
-                            <label for="sexo">Sexo <span class="text-danger">*</span></label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sexo" id="masculino" value="M" required>
-                                <label class="form-check-label" for="masculino">
-                                    Masculino
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sexo" id="femenino" value="F" required>
-                                <label class="form-check-label" for="femenino">
-                                    Femenino
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="area_id">Areas <span class="text-danger">*</span></label>
-                            {{-- {!! Form::select('area_id', $areas,[], array('id' => 'area_id', 'class' => 'form-control', 'required' => 'required' )) !!} --}}
+                            <label for="codigo">Codigo Producto <span class="text-danger">*</span></label>
+                            {!! Form::text('codigo', null, array('id' => 'codigo', 'class' => 'form-control', 'placeholder' => 'Codigo Producto', 'required' => 'required' )) !!}
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Descripción <span class="text-danger">*</span></label>
                             <textarea class="form-control" name="descripcion" id="descripcion" rows="3"></textarea>
                         </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="boletin" name="boletin" value="1">
-                            <label class="form-check-label" for="boletin" >Deseo recibir boletín informativo</label>
+                        <div class="form-group">
+                            <label for="precio">Precio <span class="text-danger">*</span></label>
+                            {!! Form::text('precio', null, array('id' => 'precio', 'class' => 'form-control', 'placeholder' => 'Precio', 'required' => 'required' )) !!}
                         </div>
-                        <div class="form-group ">
-                            <label for="roles">Roles <span class="text-danger">*</span></label>
-                            <div class="form-check">
-                                {{-- @foreach($roles as $value)
-                                    <label>{{ Form::checkbox('roles[]', $value->id, false, array('id' => 'rol-'.$value->id, 'class' => 'form-check-input roles')) }}
-                                    {{ $value->nombre }}</label>
-                                    <br/>
-                                @endforeach --}}
-                            </div>
+                        <div class="form-group">
+                            <label for="proveedor">Proveedor <span class="text-danger">*</span></label>
+                            {!! Form::text('proveedor', null, array('id' => 'proveedor', 'class' => 'form-control', 'placeholder' => 'Proveedor', 'required' => 'required' )) !!}
                         </div>
+                        <div class="form-group">
+                            <label for="estado">Estado Producto <span class="text-danger">*</span></label>
+                            {!! Form::text('estado', null, array('id' => 'estado', 'class' => 'form-control', 'placeholder' => 'Estado Producto', 'required' => 'required' )) !!}
+                        </div>
+                        
                         <button id="save" type="submit" class="btn btn-primary">Guardar</button>
                     </form>
                 </div>

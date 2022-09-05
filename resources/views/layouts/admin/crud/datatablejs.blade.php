@@ -10,7 +10,7 @@
                 }
             });
             var tablaEmpleados = jQuery('.empleados-table')
-            var tablaProductos = jQuery('.productos-table')
+            
             if(tablaEmpleados.length){
                 var table = jQuery('.empleados-table').DataTable({
                     serveside:true,
@@ -52,46 +52,7 @@
                         }
                     }
                 });
-            } else if(tablaProductos.length){
-                var table = jQuery('.productos-table').DataTable({
-                    serveside:true,
-                    processing:true,
-                    ajax:"{{route('productos.index')}}",
-                    columns:[
-                        {data:'id', name:'id'},
-                        {data:'nombre', name:'nombre'},
-                        {data:'descripcion', name:'descripcion'},
-                        {data:'precio', name:'precio'},
-                        {data:'modificar', name:'modificar'},
-                        {data:'eliminar', name:'eliminar'}
-                    ],
-                    responsive: true,
-                    "language": {
-                        "decimal":        "",
-                        "emptyTable":     "No hay datos",
-                        "info":           "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                        "infoEmpty":      "Mostrando 0 a 0 de 0 registros",
-                        "infoFiltered":   "(Filtrando de _MAX_ total de registros)",
-                        "infoPostFix":    "",
-                        "thousands":      ",",
-                        "lengthMenu":     "Mostrar _MENU_ registros",
-                        "loadingRecords": "Cargando...",
-                        "processing":     "Procesando...",
-                        "search":         "Buscar:",
-                        "zeroRecords":    "No se encontratron registros",
-                        "paginate": {
-                            "first":      "Primero",
-                            "last":       "Ultimo",
-                            "next":       "Siguiente",
-                            "previous":   "Anterior"
-                        },
-                        "aria": {
-                        "sortAscending":  ": activar para ordenar la columna ascendente",
-                        "sortDescending": ": activar para ordenar la columna descendente"
-                        }
-                    }
-                });
-            }
+            } 
             
             $('#createEmpleado').click(function(){
                 $('#id').val();
@@ -195,6 +156,130 @@
             });
             $('#ajaxModal').on('hidden.bs.modal', function (e) {
                 $('#empleadoForm').trigger("reset");
+            })
+
+
+            /* PRODUCTOS */
+            var tablaProductos = jQuery('.productos-table')
+            if(tablaProductos.length){
+                var table = jQuery('.productos-table').DataTable({
+                    serveside:true,
+                    processing:true,
+                    ajax:"{{route('productos.index')}}",
+                    columns:[
+                        {data:'id', name:'id'},
+                        {data:'nombre', name:'nombre'},
+                        {data:'descripcion', name:'descripcion'},
+                        {data:'precio', name:'precio'},
+                        {data:'modificar', name:'modificar'},
+                        {data:'eliminar', name:'eliminar'}
+                    ],
+                    responsive: true,
+                    "language": {
+                        "decimal":        "",
+                        "emptyTable":     "No hay datos",
+                        "info":           "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        "infoEmpty":      "Mostrando 0 a 0 de 0 registros",
+                        "infoFiltered":   "(Filtrando de _MAX_ total de registros)",
+                        "infoPostFix":    "",
+                        "thousands":      ",",
+                        "lengthMenu":     "Mostrar _MENU_ registros",
+                        "loadingRecords": "Cargando...",
+                        "processing":     "Procesando...",
+                        "search":         "Buscar:",
+                        "zeroRecords":    "No se encontratron registros",
+                        "paginate": {
+                            "first":      "Primero",
+                            "last":       "Ultimo",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
+                        "aria": {
+                        "sortAscending":  ": activar para ordenar la columna ascendente",
+                        "sortDescending": ": activar para ordenar la columna descendente"
+                        }
+                    }
+                });
+            }
+
+            $('#createProducto').click(function(){
+                $('#id').val();
+                $('#productoForm').trigger("reset");
+                $('#ajaxModal').modal('show');
+            });
+            $('#save').click(function(e){
+                e.preventDefault();
+                if($('#nombre').val() == ''){
+                    alert('Por favor completa el campo del Nombre');
+                    $('#nombre').focus();
+                } else if($('#codigo').val() == ''){
+                    alert('Por favor completa el campo del Codigo');
+                    $('#codigo').focus();
+                } else if($('#descripcion').val() == ''){
+                    alert('Por favor completa el campo del Descripcion');
+                    $('#descripcion').focus();
+                } else if($('#precio').val() == ''){
+                    alert('Por favor completa el campo de la Precio');
+                    $('#precio').focus();
+                } else{
+                    $(this).html('Guardar');
+                    $.ajax({
+                        data:$("#productoForm").serialize(),
+                        url: "{{route('productos.store')}}",
+                        type:"POST",
+                        dataType:'json',
+                        cache: false,
+                        crossDomain: false,
+                        success:function(data){
+                            $('#productoForm').trigger("reset");
+                            $('#ajaxModal').modal('hide');
+                            table.ajax.reload();
+                            alert('Producto Creado Exitosamente');
+                        },
+                        error:function(data){
+                            console.log('Error:', data);
+                            $("#save").html('Guardar');
+                        }
+                    });
+                }
+
+
+
+            });
+            $('body').on('click','.delete', function(){
+                var id = $(this).data("id");
+                if (confirm("Seguro que deseas borrar el Producto?")) {
+                    $.ajax({
+                        type:"DELETE",
+                        url: "{{route('productos.store')}}"+'/'+id,
+                        success:function(data){
+                            table.ajax.reload();
+                            alert('Producto Eliminado Exitosamente');
+                        },
+                        error:function(data){
+                            console.log('Error:', data)
+                        }
+                    })
+                }
+            });
+            $('body').on('click','.edit', function(){
+                var id = $(this).data("id");
+                $.get("{{route('productos.index')}}"+"/"+id+"/edit",function(data){
+                    console.log(data.roles);
+                    //$('#ajaxModalLabel').html('Editar Empleado')
+                    $('#id').val(data.producto.id);
+                    $('#nombre').val(data.producto.nombre);
+                    $('#codigo').val(data.producto.codigo);
+                    $('#descripcion').val(data.producto.descripcion);
+                    $('#precio').val(data.producto.precio);
+                    $('#proveedor').val(data.producto.proveedor);
+                    $('#estado').val(data.producto.estado);
+                    $('#ajaxModalLabel').html('Actualizar Producto');
+                    $('#ajaxModal').modal('show');
+                });
+            });
+            $('#ajaxModal').on('hidden.bs.modal', function (e) {
+                $('#productoForm').trigger("reset");
             })
         })
     });

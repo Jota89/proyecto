@@ -65,5 +65,27 @@ class DatabaseSeeder extends Seeder
             ['nombre'  => 'Codirector',]
         ];
         DB::table('roles')->insert($roles);
+
+        $productos = [
+            [
+                'nombre'           => 'telefono celular',
+                'codigo'           => '101',
+                'descripcion'      => 'articulo electronico',
+                'precio'           => '700000',
+                'proveedor'        => 'juanito',
+                'estado'           => 'disponible'
+                
+            ],
+            [
+                'nombre'           => 'motocicleta',
+                'codigo'           => '102',
+                'descripcion'      => 'transporte',
+                'precio'           => '7500000',
+                'proveedor'        => 'perea',
+                'estado'           => 'disponible'
+                
+            ]
+        ];
+        DB::table('producto')->insert($productos);
     }
 }

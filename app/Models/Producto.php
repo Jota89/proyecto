@@ -17,7 +17,7 @@ class Producto extends Model
      *
      * @var string
      */
-    protected $table = 'productos';
+    protected $table = 'producto';
 
     /**
      * The attributes that are mass assignable.
@@ -26,8 +26,11 @@ class Producto extends Model
      */
     protected $fillable = [
         'nombre',
-        'descripcion',
-        'precio'
+        'codigo',
+        'descripcion', 
+        'precio',        
+        'proveedor',
+        'estado'
     ];
 
 

@@ -20,12 +20,7 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return view('admin.dashboard');
 });
-Route::get('/empleados', function () {
-    return view('admin.empleados');
-});
-Route::get('/productos', function () {
-    return view('admin.productos');
-});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

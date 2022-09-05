@@ -34,11 +34,11 @@ class ProductoController extends Controller
             $allData = DataTables::of($productos)
             ->addIndexColumn()
             ->addColumn('modificar',function($row){
-                $btn = '<a href"javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Editar" class="edit editEmpleado btn btn-primary btn-sm" style="text-align: center;width: 50px; margin:0 auto; cursor:pointer; display: block;"><i class="far fa-edit"></i></a>';
+                $btn = '<a href"javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Editar" class="edit editProducto btn btn-primary btn-sm" style="text-align: center;width: 50px; margin:0 auto; cursor:pointer; display: block;"><i class="far fa-edit"></i></a>';
                 return $btn;
             })
             ->addColumn('eliminar',function($row){
-                $btn2 = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Borrar" class="delete deleteEmpleado btn btn-danger btn-sm" style="text-align: center;width: 50px; margin:0 auto; cursor:pointer; display: block;"><i class="far fa-trash-alt"></i> </a>';
+                $btn2 = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Borrar" class="delete deleteProducto btn btn-danger btn-sm" style="text-align: center;width: 50px; margin:0 auto; cursor:pointer; display: block;"><i class="far fa-trash-alt"></i> </a>';
                 return $btn2;
             })
             ->rawColumns(['modificar','eliminar'])
@@ -71,46 +71,37 @@ class ProductoController extends Controller
 
         $this->validate($request, [
             'nombre' => 'required',
-            'email' => 'required|email',
-            'sexo' => 'required',
-            'area_id' => 'required',
-            'boletin' => 'required',
-            'descripcion' => 'required'
+            'codigo' => 'required',
+            'descripcion' => 'required',
+            'precio' => 'required',
+            'proveedor' => 'required',
+            'estado' => 'required'
+            
         ]);
 
-        $empleado = Empleado::updateOrCreate(
+        $producto = Producto::updateOrCreate(
             ['id' => $request->id],
             [
                 'nombre' => $request->nombre,
-                'email' => $request->email,
-                'sexo' => $request->sexo,
-                'area_id' => $request->area_id,
-                'boletin' => $request->boletin,
-                'descripcion' => $request->descripcion
+                'codigo' => $request->codigo,
+                'descripcion' => $request->descripcion,
+                'precio' => $request->precio,
+                'proveedor' => $request->proveedor,
+                'estado' => $request->estado
+                
             ],
         );
 
-        $old_roles = EmpleadoRol::where('empleado_id',$request->id)->get('rol_id');
-
-        foreach($request->roles as $item){
-            EmpleadoRol::updateOrCreate(
-                [
-                    'empleado_id' => $empleado->id,
-                    'rol_id' => $item
-                ],
-            );
-        }
-
-        return response()->json(['success'=>'Empleado creado correctamente']);
+        return response()->json(['success'=>'Producto creado correctamente']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Empleados  $empleado
+     * @param  \App\Models\Productos  $producto
      * @return \Illuminate\Http\Response
      */
-    public function show(Empleado $empleado)
+    public function show(Producto $producto)
     {
         //
     }
@@ -118,16 +109,16 @@ class ProductoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Empleados  $empleado
+     * @param  \App\Models\Productos  $producto
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $empleado = Empleado::find($id);
-        $roles = EmpleadoRol::where('empleado_id',$id)->get('rol_id');
+        $producto = Producto::find($id);
+        
         $datos = [
-            'empleado'=>$empleado,
-            'roles'=>$roles
+            'producto'=>$producto,
+            
         ];
         return response()->json($datos);
 
@@ -137,10 +128,10 @@ class ProductoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Empleados  $empleado
+     * @param  \App\Models\Productos  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empleado $empleado)
+    public function update(Request $request, Producto $producto)
     {
         //
     }
@@ -148,12 +139,12 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Empleados  $empleado
+     * @param  \App\Models\Productos  $producto
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Empleado::find($id)->delete();
-        return response()->json(['success'=>'Empleado eliminado correctamente']); 
+        Producto::find($id)->delete();
+        return response()->json(['success'=>'Producto eliminado correctamente']); 
     }
 }
